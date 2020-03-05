@@ -7,8 +7,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 dotenv.config();
 const uri = process.env.DB_PATH;
-console.log('uri', uri)
-startDB(uri)
+startDB(uri) 
 // mongoose.connect(uri, {
 //   bufferCommands: false, // Disable mongoose buffering
 //   bufferMaxEntries: 0, // and MongoDB driver buffering 
