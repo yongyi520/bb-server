@@ -113,7 +113,7 @@ export const algoPlaceBitmexOrder = async order => {
   var bitmexClient = new BitmexClient(
     process.env.MEXID,
     process.env.MEXSECRET,
-    true
+    true 
   );
   try {
     return parseBitmexOrderResponse(await bitmexClient.order.new(order));
