@@ -8,7 +8,7 @@
     "dev": "nodemon --exec babel-node src/index.js",
     "build": "NODE_ENV=PRODUCTION babel src -d dist --copy-files",
     "serve": "NODE_ENV=production node dist/index.js",
-    "start": "NODE_ENV=production nodemon --exec babel-node src/index.js"
+    "start": "NODE_ENV=production node dist/index.js"
   },
   "dependencies": {
     "apollo-server-express": "^2.10.1",
@@ -19,13 +19,13 @@
     "moment": "^2.24.0",
     "mongoose": "^5.9.2",
     "request": "^2.88.2",
-    "request-promise-native": "^1.0.8"
-  },
-  "devDependencies": {
+    "request-promise-native": "^1.0.8",
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-2": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1"
+  },
+  "devDependencies": {
     "nodemon": "^2.0.2"
   }
 }
