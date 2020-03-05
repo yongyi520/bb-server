@@ -20,7 +20,7 @@ const context = async ({ ctx }) => {
     ctx
   };
 };
-const server = new ApolloServer({ typeDefs, resolvers, context });
+const server = new ApolloServer({ typeDefs, resolvers, context }); 
 
 const app = express();
 server.applyMiddleware({ app });
