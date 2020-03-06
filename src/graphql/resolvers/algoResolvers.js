@@ -11,6 +11,9 @@ import { parseBitmexOrderResponse, checkAlgoOrdersStatus } from "../../lib/algoU
 
 export default {
   Query: {
+    getAlgos: async (_parent, _args, _context, _info) => { 
+      return await Algo.find()
+    },
     getHourlyData: async (_parent, _args, _context, _info) => {
       console.log("process.env.CRYPTOCOMPAREKEY", process.env.CRYPTOCOMPAREKEY);
       var cryptocompare = new CryptoCompare(process.env.CRYPTOCOMPAREKEY);

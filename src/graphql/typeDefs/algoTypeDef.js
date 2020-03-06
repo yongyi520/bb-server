@@ -37,6 +37,7 @@ export default gql`
     getHourlyData: Boolean
     calcEMA: Float
     checkAlgoOrderStatus(id: String!): Boolean
+    getAlgos: [Algo]
   }
 
   extend type Mutation {

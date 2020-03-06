@@ -7,6 +7,9 @@ import { calculateBitmexEMADaily } from "../../lib/chartDataPointUtils";
 
 export default {
   Query: {
+    getChartDataPoints: async (_parent, { epochTime }, { db, models, ctx }) => {
+      return await ChartDataPoint.find()
+    },
     epochTimeToDate: async (_parent, { epochTime }, { db, models, ctx }) => {
       console.log("date is", new Date(epochTime * 1000));
       return true;

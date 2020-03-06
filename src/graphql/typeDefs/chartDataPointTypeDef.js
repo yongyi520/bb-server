@@ -3,6 +3,7 @@ import { gql } from "apollo-server-express";
 
 export default gql`
   type ChartDataPoint {
+    id: ID
     exchange: String
     symbol: String 
     timeFrame: Int
@@ -26,6 +27,7 @@ export default gql`
 
   extend type Query {
     epochTimeToDate(epochTime: Int): Boolean    
+    getChartDataPoints: [ChartDataPoint]
   }
   extend type Mutation {
     addChartDataPoint(data: ChartDataPointInput): Boolean
