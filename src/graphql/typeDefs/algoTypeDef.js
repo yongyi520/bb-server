@@ -45,8 +45,8 @@ export default gql`
     runAlgoUpdate(id: String!): Boolean
     turnOnAlgo(id: String!): Boolean
     turnOffAlgo(id: String!): Boolean
-    addAlgo(data: AlgoInput): Boolean
-    updateAlgo(data: AlgoInput): Boolean
+    addAlgo(data: AlgoInput!): Algo
+    updateAlgo(id: String!, data: AlgoInput!): Algo
     deleteAlgo(id: String): Boolean
   }
 `;

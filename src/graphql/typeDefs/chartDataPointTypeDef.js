@@ -26,11 +26,13 @@ export default gql`
   }
 
   extend type Query {
-    epochTimeToDate(epochTime: Int): Boolean    
+    epochTimeToDate(epochTime: Int!): Boolean    
     getChartDataPoints: [ChartDataPoint]
   }
   extend type Mutation {
-    addChartDataPoint(data: ChartDataPointInput): Boolean
+    addChartDataPoint(data: ChartDataPointInput!): ChartDataPoint
+    updateChartDataPoint(id: String!, data: ChartDataPointInput!): ChartDataPoint
+    deleteChartDataPoint(id: String!): Boolean
     calculateBitmexEMADaily: Boolean
   }
 `

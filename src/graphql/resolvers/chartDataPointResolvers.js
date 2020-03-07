@@ -8,7 +8,7 @@ import { calculateBitmexEMADaily } from "../../lib/chartDataPointUtils";
 export default {
   Query: {
     getChartDataPoints: async (_parent, { epochTime }, { db, models, ctx }) => {
-      return await ChartDataPoint.find()
+      return await ChartDataPoint.find();
     },
     epochTimeToDate: async (_parent, { epochTime }, { db, models, ctx }) => {
       console.log("date is", new Date(epochTime * 1000));
@@ -43,8 +43,32 @@ export default {
         console.log("> create chart data point error: ", e);
       }
     },
+    updateChartDataPoint: async (_parent, { id, data }, _context) => {
+      console.log('update chart data point id', id)
+      console.log('update data', data)
+      try {
+        const findResponse = await ChartDataPoint.findOne({_id: id})
+        if(findResponse) {
+          const updateResponse = await ChartDataPoint.updateOne({_id: id}, data)
+          if(updateResponse.n === 1) {
+            return await ChartDataPoint.findOne({_id: id})
+          }
+          return null
+        }
+      } catch (e) {
+        console.log('something is wrong with the data base, either cannot find chart data point or cannot update')
+      }
+    },
+    deleteChartDataPoint: async (_parent, { id }, _context) => {
+      try {
+        const deleteResponse = await ChartDataPoint.deleteOne({_id: id})
+        return deleteResponse && deleteResponse.n === 1
+      } catch(e) {
+        console.log('something is wrong with delete algo, cannot find it or some mongo error')
+      }
+    },
     calculateBitmexEMADaily: async (_parent, _args, _context) => {
-      await calculateBitmexEMADaily()
+      await calculateBitmexEMADaily();
     }
   }
 };

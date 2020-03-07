@@ -3,16 +3,21 @@ import CryptoCompare from "../../lib/cryptocompare/CryptoCompare";
 import { getStartEMAEpochTime } from "../../lib/dateUtils";
 import { calculateSlowAndFastEmaArray } from "../../lib/tradeUtils";
 import Algo from "../../db/models/algoModel";
-import { runBitmexFastEMAAlgo, runBitmexFastEMAAlgoUpdate } from "../../lib/runAlgos";
+import {
+  runBitmexFastEMAAlgo,
+  runBitmexFastEMAAlgoUpdate
+} from "../../lib/runAlgos";
 import Order from "../../db/models/orderModel";
 import BitmexClient from "../../lib/bitmex/BitmexClient";
-import { parseBitmexOrderResponse, checkAlgoOrdersStatus } from "../../lib/algoUtils";
-
+import {
+  parseBitmexOrderResponse,
+  checkAlgoOrdersStatus
+} from "../../lib/algoUtils";
 
 export default {
   Query: {
-    getAlgos: async (_parent, _args, _context, _info) => { 
-      return await Algo.find()
+    getAlgos: async (_parent, _args, _context, _info) => {
+      return await Algo.find();
     },
     getHourlyData: async (_parent, _args, _context, _info) => {
       console.log("process.env.CRYPTOCOMPAREKEY", process.env.CRYPTOCOMPAREKEY);
@@ -29,7 +34,7 @@ export default {
       console.log("response", response.Data);
       console.log("time from", response.Data.TimeFrom);
       console.log("response.data.TimeTo", response.Data.TimeTo);
-      const epochTime = getStartEMAEpochTime(response.Data.TimeTo)
+      const epochTime = getStartEMAEpochTime(response.Data.TimeTo);
       // epoch number * 1000 that includes milliseconds
       // let date = new Date(response.Data.TimeTo * 1000);
       // console.log("date", date);
@@ -37,7 +42,7 @@ export default {
       // console.log("date set utc hour to 0", date);
       // let epochTime = date.getTime() / 1000;
       console.log("date in utc seconds", epochTime);
-      console.log('next midnight utc seconds', epochTime + 86400)
+      console.log("next midnight utc seconds", epochTime + 86400);
       // date.setUTCHours;
       // console.log(new Date(response.Data.TimeFrom))
       // console.log(new Date(response.Data.TimeTo))
@@ -65,7 +70,7 @@ export default {
       const chartDataPointQuery = {
         exchange: "Bitmex",
         symbol: "XBTUSD",
-        timeFrame: 2, 
+        timeFrame: 2,
         timeFrameUnit: "H",
         type: "EMA",
         epochTime: startEpochTime
@@ -74,69 +79,70 @@ export default {
         dataArray,
         chartDataPointQuery
       );
-      console.log('slow ema array', slowEmaArray)
-      console.log('fast ema array', fastEmaArray)
+      console.log("slow ema array", slowEmaArray);
+      console.log("fast ema array", fastEmaArray);
     },
     checkAlgoOrderStatus: async (_parent, { id }, _context, _info) => {
-      const algo = await Algo.findOne({_id: id})
-      const orderStatuses = await checkAlgoOrdersStatus(algo)
-      console.log('order statuses', orderStatuses)
+      const algo = await Algo.findOne({ _id: id });
+      const orderStatuses = await checkAlgoOrdersStatus(algo);
+      console.log("order statuses", orderStatuses);
     }
   },
   Mutation: {
-    runAlgo: async (_parent, { id }, _context, _info) => { 
+    runAlgo: async (_parent, { id }, _context, _info) => {
       // const algoId = "5e58a71d3139841094f91ed0"
-      runBitmexFastEMAAlgo(id)  
+      runBitmexFastEMAAlgo(id);
     },
-    runAlgoUpdate: async (_parent, { id }, _context, _info) => { 
-      runBitmexFastEMAAlgoUpdate(id)
+    runAlgoUpdate: async (_parent, { id }, _context, _info) => {
+      runBitmexFastEMAAlgoUpdate(id);
     },
-    turnOnAlgo:  async (_parent, { id }, _context, _info) => { 
-      let algo = null
+    turnOnAlgo: async (_parent, { id }, _context, _info) => {
+      let algo = null;
       try {
-        algo = await Algo.findOne({_id: id})
+        algo = await Algo.findOne({ _id: id });
       } catch (e) {
-        console.log('error finding algo', e)
+        console.log("error finding algo", e);
       }
-      
+
       try {
-        if(algo && algo.status === 'off') {
-          const response = await Algo.updateOne({_id: id}, {status: 'on', executedNum: 0})
-          console.log('response', response)
-          return response.n === 1
+        if (algo && algo.status === "off") {
+          const response = await Algo.updateOne(
+            { _id: id },
+            { status: "on", executedNum: 0 }
+          );
+          console.log("response", response);
+          return response.n === 1;
         } else {
-          console.log('algo is already on, status now is: ', algo.status)
+          console.log("algo is already on, status now is: ", algo.status);
         }
-        
       } catch (e) {
-        console.log('error updating algo by turning it on')
+        console.log("error updating algo by turning it on");
       }
-      
     },
     /**
      * delete the orders at hand, then turn the algo off
-     * TODO: 
+     * TODO:
      * 1. check order statuses
      * 2. if order statuses are active, cancel them
      * 3. delete orders from database
      * 4. update the orders field on algo mongo object
      */
-    turnOffAlgo:  async (_parent, { id }, _context, _info) => { 
-      let algo = null
+    turnOffAlgo: async (_parent, { id }, _context, _info) => {
+      let algo = null;
       try {
-        algo = await Algo.findOne({_id: id})
+        algo = await Algo.findOne({ _id: id });
       } catch (e) {
-        console.log('error finding algo', e)
+        console.log("error finding algo", e);
       }
-      
+
       try {
-        const response = await Algo.updateOne({_id: id}, {status: 'off'})
-        console.log('response', response)
+        const response = await Algo.updateOne({ _id: id }, { status: "off" });
+        console.log("response", response);
       } catch (e) {
-        console.log('error updating algo by turning it off')
+        console.log("error updating algo by turning it off");
       }
     },
-    addAlgo: async (_parent, { data }, _context, _info) => { 
+    addAlgo: async (_parent, { data }, _context, _info) => {
       /**
        * {
           "data": {
@@ -151,13 +157,38 @@ export default {
           }
         }
        */
-      console.log('got data', data)
+      console.log("got data", data);
       try {
-        const response = await Algo.create(data)
-        console.log('algo created', response)
+        const response = await Algo.create(data);
+        console.log("algo created", response);
+        return response
       } catch (e) {
-        console.log('error creating algo', e)
+        console.log("error creating algo", e);
+      }
+    },
+    updateAlgo: async (_parent, { id, data }, _context, _info) => {
+      console.log('update algo id', id)
+      console.log('update data', data)
+      try {
+        const findResponse = await Algo.findOne({_id: id})
+        if(findResponse) {
+          const updateResponse = await Algo.updateOne({_id: id}, data)
+          if(updateResponse.n === 1) {
+            return await Algo.findOne({_id: id})
+          }
+          return null
+        }
+      } catch (e) {
+        console.log('something is wrong with the data base, either cannot find algo or cannot update')
+      }
+    },
+    deleteAlgo: async (_parent, { id }, _context, _info) => {
+      try {
+        const deleteResponse = await Algo.deleteOne({_id: id})
+        return deleteResponse && deleteResponse.n === 1
+      } catch(e) {
+        console.log('something is wrong with delete algo, cannot find it or some mongo error')
       }
     }
   }
-}
+};
