@@ -161,33 +161,37 @@ export default {
       try {
         const response = await Algo.create(data);
         console.log("algo created", response);
-        return response
+        return response;
       } catch (e) {
         console.log("error creating algo", e);
       }
     },
     updateAlgo: async (_parent, { id, data }, _context, _info) => {
-      console.log('update algo id', id)
-      console.log('update data', data)
+      console.log("update algo id", id);
+      console.log("update data", data);
       try {
-        const findResponse = await Algo.findOne({_id: id})
-        if(findResponse) {
-          const updateResponse = await Algo.updateOne({_id: id}, data)
-          if(updateResponse.n === 1) {
-            return await Algo.findOne({_id: id})
+        const findResponse = await Algo.findOne({ _id: id });
+        if (findResponse) {
+          const updateResponse = await Algo.updateOne({ _id: id }, data);
+          if (updateResponse.n === 1) {
+            return await Algo.findOne({ _id: id });
           }
-          return null
+          return null;
         }
       } catch (e) {
-        console.log('something is wrong with the data base, either cannot find algo or cannot update')
+        console.log(
+          "something is wrong with the data base, either cannot find algo or cannot update"
+        );
       }
     },
     deleteAlgo: async (_parent, { id }, _context, _info) => {
       try {
-        const deleteResponse = await Algo.deleteOne({_id: id})
-        return deleteResponse && deleteResponse.n === 1
-      } catch(e) {
-        console.log('something is wrong with delete algo, cannot find it or some mongo error')
+        const deleteResponse = await Algo.deleteOne({ _id: id });
+        return deleteResponse && deleteResponse.n === 1 ? { id } : null;
+      } catch (e) {
+        console.log(
+          "something is wrong with delete algo, cannot find it or some mongo error"
+        );
       }
     }
   }

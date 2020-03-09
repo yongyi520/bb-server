@@ -32,7 +32,7 @@ export default gql`
   extend type Mutation {
     addChartDataPoint(data: ChartDataPointInput!): ChartDataPoint
     updateChartDataPoint(id: String!, data: ChartDataPointInput!): ChartDataPoint
-    deleteChartDataPoint(id: String!): Boolean
+    deleteChartDataPoint(id: String!): ChartDataPoint
     calculateBitmexEMADaily: Boolean
   }
 `
