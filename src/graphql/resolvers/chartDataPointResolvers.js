@@ -39,6 +39,7 @@ export default {
       try {
         const response = await ChartDataPoint.create(data);
         console.log("chart data point response", response);
+        return response
       } catch (e) {
         console.log("> create chart data point error: ", e);
       }
