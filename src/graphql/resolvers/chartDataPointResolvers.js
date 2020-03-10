@@ -76,7 +76,8 @@ export default {
       }
     },
     calculateBitmexEMADaily: async (_parent, _args, _context) => {
-      await calculateBitmexEMADaily();
+      calculateBitmexEMADaily();
+      return true
     }
   }
 };
