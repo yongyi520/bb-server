@@ -91,6 +91,7 @@ export default {
   Mutation: {
     runAlgo: async (_parent, { id }, _context, _info) => {
       // const algoId = "5e58a71d3139841094f91ed0"
+      console.log('run algo: ', id)
       runBitmexFastEMAAlgo(id);
       return true
     },
