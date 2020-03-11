@@ -76,6 +76,7 @@ export default {
       }
     },
     calculateBitmexEMADaily: async (_parent, _args, _context) => {
+      console.log('calculate bitmex ema daily')
       calculateBitmexEMADaily();
       return true
     }

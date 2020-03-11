@@ -4,6 +4,7 @@ export default {
       return "_Hello_Query_"
     },
     hello(_parent, _args, _context, _info) {
+      console.log('hello')
       return "Hello GraphQL World"
     },
   },
