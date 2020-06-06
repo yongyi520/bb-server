@@ -11,7 +11,7 @@
     "start": "NODE_ENV=production node dist/index.js"
   },
   "dependencies": {
-    "apollo-server-express": "^2.10.1",
+    "apollo-server-express": "^2.14.2",
     "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
